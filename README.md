@@ -1,7 +1,7 @@
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
 ![Flask](https://img.shields.io/badge/Flask-2.3.2-green)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-![Last Commit](https://img.shields.io/github/last-commit/seu-usuario/LicitaSimples)
+![Last Commit](https://img.shields.io/github/last-commit/MuriloM676/LicitaSimples)
 
 # LicitaSimples
 
