@@ -42,6 +42,28 @@
             <button type="submit" class="btn btn-primary w-100">Consultar</button>
         </form>
         <div id="resultados"></div>
+
+        <h2 class="text-center my-4">Consulta Atas</h2>
+        <form id="consultaAtasForm" class="mb-4">
+            <div class="mb-3">
+                <label for="dataInicialAtas" class="form-label">Data Inicial:</label>
+                <input type="date" id="dataInicialAtas" name="dataInicialAtas" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="dataFinalAtas" class="form-label">Data Final:</label>
+                <input type="date" id="dataFinalAtas" name="dataFinalAtas" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="paginaAtas" class="form-label">Página:</label>
+                <input type="number" id="paginaAtas" name="paginaAtas" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="cnpjOrgaoAtas" class="form-label">CNPJ do Órgão (opcional):</label>
+                <input type="text" id="cnpjOrgaoAtas" name="cnpjOrgaoAtas" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-secondary w-100">Consultar Atas</button>
+        </form>
+        <div id="resultadosAtas"></div>
     </div>
 
     <!-- Bootstrap JS -->
@@ -112,6 +134,72 @@
         }
 
         document.getElementById('consultaForm').addEventListener('submit', consultar);
+
+        async function consultarAtas(event) {
+            event.preventDefault(); // Evitar o reload da página
+
+            // Obter os valores dos campos de data
+            const dataInicial = document.getElementById('dataInicialAtas').value.replace(/-/g, '');
+            const dataFinal = document.getElementById('dataFinalAtas').value.replace(/-/g, '');
+            const pagina = document.getElementById('paginaAtas').value;
+            const cnpjOrgao = document.getElementById('cnpjOrgaoAtas').value;
+
+            // Montar os parâmetros da URL
+            const queryParams = new URLSearchParams({
+                dataInicial,
+                dataFinal,
+                pagina,
+                ...(cnpjOrgao && { cnpjOrgao }) // Adicionar apenas se preenchido
+            });
+
+            try {
+                const response = await fetch(`/consulta-atas?${queryParams}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    exibirResultadosAtas(data);
+                } else {
+                    exibirErroAtas(data.error || 'Erro desconhecido');
+                }
+            } catch (error) {
+                exibirErroAtas('Erro ao consultar a API.');
+                console.error(error);
+            }
+        }
+
+        function exibirResultadosAtas(data) {
+            console.log("Dados recebidos no frontend (Atas):", data); // Log dos dados recebidos
+            const resultadosDiv = document.getElementById('resultadosAtas');
+            resultadosDiv.innerHTML = '';
+
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card result-card';
+                    card.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">Ata: ${item.numeroAta || 'N/A'}</h5>
+                            <p class="card-text">
+                                <strong>Órgão:</strong> ${item.nomeOrgao || 'N/A'}<br>
+                                <strong>Valor:</strong> R$ ${item.valor || 'N/A'}<br>
+                                <strong>Data de Publicação:</strong> ${item.dataPublicacao || 'N/A'}<br>
+                                <strong>Objeto:</strong> ${item.objetoAta || 'N/A'}
+                            </p>
+                        </div>
+                    `;
+                    resultadosDiv.appendChild(card);
+                });
+            } else {
+                resultadosDiv.innerHTML = '<p class="text-center">Nenhuma ata encontrada para os parâmetros fornecidos.</p>';
+            }
+        }
+
+        function exibirErroAtas(mensagem) {
+            const resultadosDiv = document.getElementById('resultadosAtas');
+            resultadosDiv.innerHTML = `<p class="error-message text-center">${mensagem}</p>`;
+        }
+
+        document.getElementById('consultaAtasForm').addEventListener('submit', consultarAtas);
     </script>
 </body>
 </html>
