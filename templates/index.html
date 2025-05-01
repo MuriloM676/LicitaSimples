@@ -50,11 +50,13 @@
         async function consultar(event) {
             event.preventDefault(); // Evitar o reload da página
 
-            const dataInicial = document.getElementById('dataInicial').value;
-            const dataFinal = document.getElementById('dataFinal').value;
+            // Obter os valores dos campos de data
+            const dataInicial = document.getElementById('dataInicial').value.replace(/-/g, '');
+            const dataFinal = document.getElementById('dataFinal').value.replace(/-/g, '');
             const pagina = document.getElementById('pagina').value;
             const cnpjOrgao = document.getElementById('cnpjOrgao').value;
 
+            // Montar os parâmetros da URL
             const queryParams = new URLSearchParams({
                 dataInicial,
                 dataFinal,
