@@ -41,7 +41,22 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Consultar</button>
         </form>
-        <div id="resultados"></div>
+        <div id="resultados" class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Número do Contrato</th>
+                        <th>Órgão</th>
+                        <th>Valor</th>
+                        <th>Data de Assinatura</th>
+                        <th>Objeto</th>
+                    </tr>
+                </thead>
+                <tbody id="resultadosContratosBody">
+                    <!-- Os resultados serão inseridos aqui -->
+                </tbody>
+            </table>
+        </div>
 
         <h2 class="text-center my-4">Consulta Atas</h2>
         <form id="consultaAtasForm" class="mb-4">
@@ -63,7 +78,22 @@
             </div>
             <button type="submit" class="btn btn-secondary w-100">Consultar Atas</button>
         </form>
-        <div id="resultadosAtas"></div>
+        <div id="resultadosAtas" class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Número da Ata</th>
+                        <th>Órgão</th>
+                        <th>Valor</th>
+                        <th>Data de Publicação</th>
+                        <th>Objeto</th>
+                    </tr>
+                </thead>
+                <tbody id="resultadosAtasBody">
+                    <!-- Os resultados serão inseridos aqui -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
@@ -102,35 +132,30 @@
         }
 
         function exibirResultados(data) {
-            console.log("Dados recebidos no frontend:", data); // Log dos dados recebidos
-            const resultadosDiv = document.getElementById('resultados');
-            resultadosDiv.innerHTML = '';
+            console.log("Dados recebidos no frontend (Contratos):", data); // Log dos dados recebidos
+            const resultadosBody = document.getElementById('resultadosContratosBody');
+            resultadosBody.innerHTML = '';
 
             if (data && data.length > 0) {
                 data.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'card result-card';
-                    card.innerHTML = `
-                        <div class="card-body">
-                            <h5 class="card-title">Contrato: ${item.numeroContrato || 'N/A'}</h5>
-                            <p class="card-text">
-                                <strong>Órgão:</strong> ${item.nomeOrgao || 'N/A'}<br>
-                                <strong>Valor:</strong> R$ ${item.valor || 'N/A'}<br>
-                                <strong>Data:</strong> ${item.dataAssinatura || 'N/A'}<br>
-                                <strong>Objeto:</strong> ${item.objetoContrato || 'N/A'}
-                            </p>
-                        </div>
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.numeroContrato || 'N/A'}</td>
+                        <td>${item.nomeOrgao || 'N/A'}</td>
+                        <td>R$ ${item.valor || 'N/A'}</td>
+                        <td>${item.dataAssinatura || 'N/A'}</td>
+                        <td>${item.objetoContrato || 'N/A'}</td>
                     `;
-                    resultadosDiv.appendChild(card);
+                    resultadosBody.appendChild(row);
                 });
             } else {
-                resultadosDiv.innerHTML = '<p class="text-center">Nenhum contrato encontrado para os parâmetros fornecidos.</p>';
+                resultadosBody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum contrato encontrado para os parâmetros fornecidos.</td></tr>';
             }
         }
 
         function exibirErro(mensagem) {
-            const resultadosDiv = document.getElementById('resultados');
-            resultadosDiv.innerHTML = `<p class="error-message text-center">${mensagem}</p>`;
+            const resultadosBody = document.getElementById('resultadosContratosBody');
+            resultadosBody.innerHTML = `<tr><td colspan="5" class="error-message text-center">${mensagem}</td></tr>`;
         }
 
         document.getElementById('consultaForm').addEventListener('submit', consultar);
@@ -169,34 +194,29 @@
 
         function exibirResultadosAtas(data) {
             console.log("Dados recebidos no frontend (Atas):", data); // Log dos dados recebidos
-            const resultadosDiv = document.getElementById('resultadosAtas');
-            resultadosDiv.innerHTML = '';
+            const resultadosBody = document.getElementById('resultadosAtasBody');
+            resultadosBody.innerHTML = '';
 
             if (data && data.length > 0) {
                 data.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'card result-card';
-                    card.innerHTML = `
-                        <div class="card-body">
-                            <h5 class="card-title">Ata: ${item.numeroAta || 'N/A'}</h5>
-                            <p class="card-text">
-                                <strong>Órgão:</strong> ${item.nomeOrgao || 'N/A'}<br>
-                                <strong>Valor:</strong> R$ ${item.valor || 'N/A'}<br>
-                                <strong>Data de Publicação:</strong> ${item.dataPublicacao || 'N/A'}<br>
-                                <strong>Objeto:</strong> ${item.objetoAta || 'N/A'}
-                            </p>
-                        </div>
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.numeroAta || 'N/A'}</td>
+                        <td>${item.nomeOrgao || 'N/A'}</td>
+                        <td>R$ ${item.valor || 'N/A'}</td>
+                        <td>${item.dataPublicacao || 'N/A'}</td>
+                        <td>${item.objetoAta || 'N/A'}</td>
                     `;
-                    resultadosDiv.appendChild(card);
+                    resultadosBody.appendChild(row);
                 });
             } else {
-                resultadosDiv.innerHTML = '<p class="text-center">Nenhuma ata encontrada para os parâmetros fornecidos.</p>';
+                resultadosBody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhuma ata encontrada para os parâmetros fornecidos.</td></tr>';
             }
         }
 
         function exibirErroAtas(mensagem) {
-            const resultadosDiv = document.getElementById('resultadosAtas');
-            resultadosDiv.innerHTML = `<p class="error-message text-center">${mensagem}</p>`;
+            const resultadosDiv = document.getElementById('resultadosAtasBody');
+            resultadosDiv.innerHTML = `<tr><td colspan="5" class="error-message text-center">${mensagem}</td></tr>`;
         }
 
         document.getElementById('consultaAtasForm').addEventListener('submit', consultarAtas);
