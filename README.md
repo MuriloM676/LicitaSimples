@@ -1,5 +1,3 @@
-Aqui está o arquivo `README.md` para o seu projeto:
-
 ```markdown
 # LicitaSimples
 
@@ -162,7 +160,7 @@ Contribuições são bem-vindas! Siga os passos abaixo para contribuir:
 ## **Licença**
 
 Este projeto está licenciado sob a licença MIT. Consulte o arquivo `LICENSE` para mais informações.
-```
+
 
 ---
 
@@ -178,5 +176,3 @@ Este projeto está licenciado sob a licença MIT. Consulte o arquivo `LICENSE` p
    git remote add origin https://github.com/seu-usuario/LicitaSimples.git
    git push -u origin main
    ```
-
-Se precisar de ajuda para ajustar ou melhorar o `README.md`, é só avisar!
